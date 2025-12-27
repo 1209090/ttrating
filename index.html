@@ -47,7 +47,7 @@
 <div class="three-column-grid">
     <div class="column" style="min-width:120px;">
         <label for="my-rating"><b>Мой рейтинг</b></label>
-        <input id="my-rating" type="number" value="410" min="0" step="1">
+        <input id="my-rating" type="number" min="0" step="1">
         <label for="coefficient"><b>Коэффициент турнира</b></label>
         <input id="coefficient" type="number" min="0" step="0.1" value="0.4">
         <label for="delta-rating"><b>Дельта рейтинга</b></label>
@@ -55,6 +55,7 @@
         <label for="result-text"><b>Итоговый рейтинг</b></label>
         <input id="result-text" type="text" readonly>
         <button id="calculate">Рассчитать</button>
+        <button id="reset">Сбросить</button>
     </div>
     <div class="column wins">
         <h4>Я выиграл</h4>
@@ -107,6 +108,15 @@
         console.log(winsValues, losesValues, deltaRatingValue);
         deltaRating.value = deltaRatingValue;
         resultText.value = round(myRating + deltaRatingValue, 0);
+    });
+
+    document.getElementById('reset').addEventListener('click', function() {
+        document.getElementById('my-rating').value = '';
+        document.getElementById('coefficient').value = '0.4';
+        document.querySelectorAll('.wins input').forEach(input => input.value = '');
+        document.querySelectorAll('.loses input').forEach(input => input.value = '');
+        document.getElementById('delta-rating').value = '';
+        document.getElementById('result-text').value = '';
     });
 </script>
 </body>
