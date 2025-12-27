@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title>Калькулятор рейтинга</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<style>
+    .three-column-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        max-width: 600px;
+        margin: 32px auto;
+        align-items: start;
+        font-family: sans-serif;
+    }
+    .column {
+        background: #f7f7f7;
+        padding: 18px 16px 16px 16px;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+    .column label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    .column input[type="number"] {
+        width: 100%;
+        padding: 5px 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+        margin-bottom: 14px;
+    }
+    .column h4 {
+        margin: 0 0 15px 0;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .wins input {
+        background-color: #d4edda;
+    }
+    .loses input {
+        background-color: #f8d7da;
+    }
+</style>
+<div class="three-column-grid">
+    <div class="column" style="min-width:120px;">
+        <label for="my-rating"><b>Мой рейтинг</b></label>
+        <input id="my-rating" type="number" value="410" min="0" step="1">
+        <label for="coefficient"><b>Коэффициент турнира</b></label>
+        <input id="coefficient" type="number" min="0" step="0.1" value="0.4">
+        <label for="delta-rating"><b>Дельта рейтинга</b></label>
+        <input id="delta-rating" type="text" readonly>
+        <label for="result-text"><b>Итоговый рейтинг</b></label>
+        <input id="result-text" type="text" readonly>
+        <button id="calculate">Рассчитать</button>
+    </div>
+    <div class="column wins">
+        <h4>Я выиграл</h4>
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+    </div>
+    <div class="column loses">
+        <h4>Я проиграл</h4>
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+        <input type="number" step="1" min="0">
+    </div>
+</div>
+<script>
+    function calculateRating(myRating, wins, loses, coefficient) {
+      let res = wins.reduce((sum, w) => sum + (myRating > w + 100 ? 0 : (100 - (myRating - w)) / 10.0), 0);
+      res -= loses.reduce((sum, l) => sum + (l > myRating + 100 ? 0 : (100 - (l - myRating)) / 15.0), 0);
+      return res * coefficient;
+    }
+
+    function round(value, precision) {
+      return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
+    }
+
+    document.getElementById('calculate').addEventListener('click', function() {
+        const myRating = parseInt(document.getElementById('my-rating').value);
+        const coefficient = parseFloat(document.getElementById('coefficient').value);
+        const deltaRating = document.getElementById('delta-rating');
+        const resultText = document.getElementById('result-text');
+        const wins = document.querySelectorAll('.wins input');
+        const loses = document.querySelectorAll('.loses input');
+        const winsValues = Array.from(wins).map(input => parseInt(input.value)).filter(value => value > 0);
+        const losesValues = Array.from(loses).map(input => parseInt(input.value)).filter(value => value > 0);
+        const deltaRatingValue = round(calculateRating(myRating, winsValues, losesValues, coefficient), 2);
+        console.log(winsValues, losesValues, deltaRatingValue);
+        deltaRating.value = deltaRatingValue;
+        resultText.value = round(myRating + deltaRatingValue, 0);
+    });
+</script>
+</body>
+</html>
