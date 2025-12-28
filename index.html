@@ -10,7 +10,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 24px;
-        max-width: 600px;
+        max-width: 800px;
         margin: 32px auto;
         align-items: start;
         font-family: sans-serif;
@@ -27,12 +27,19 @@
         margin-bottom: 8px;
         font-size: 14px;
     }
-    .column input[type="number"] {
+    .column input {
         width: 100%;
         padding: 5px 6px;
         font-size: 16px;
         box-sizing: border-box;
         margin-bottom: 14px;
+    }
+    .column button {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 18px;
+        border-radius: 6px;
+        margin-bottom: 12px;
     }
     .column h4 {
         margin: 0 0 15px 0;
@@ -52,12 +59,12 @@
         <input id="my-rating" type="number" min="0" step="1">
         <label for="coefficient"><b>Коэффициент турнира</b></label>
         <input id="coefficient" type="number" min="0" step="0.1" value="0.4">
+        <button id="calculate" >Рассчитать</button>
+        <button id="reset">Сбросить</button>
         <label for="delta-rating"><b>Дельта рейтинга</b></label>
         <input id="delta-rating" type="text" readonly>
         <label for="result-text"><b>Итоговый рейтинг</b></label>
         <input id="result-text" type="text" readonly>
-        <button id="calculate">Рассчитать</button>
-        <button id="reset">Сбросить</button>
     </div>
     <div class="column wins">
         <h4>Я выиграл</h4>
